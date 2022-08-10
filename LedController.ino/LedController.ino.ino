@@ -4,11 +4,21 @@
   Last update: 08/08/2022
 */
 
-void setup() {
-  Serial.begin(9600);
-  pinMode(4, INPUT);
-}
+#include <IRremote.h>
 
+int RECV_PIN = 4;
+IRrecv irrecv(RECV_PIN);
+
+decode_results results;
+
+void setup(){
+  Serial.begin(9600);
+  irrecv.enableIRIn(); 
+}
+  
 void loop() {
-  Serial.println(digitalRead(4));
+if (irrecv.decode(&results)) {
+    Serial.println(results.value, HEX);
+    irrecv.resume();
+  }
 }
